@@ -1,6 +1,7 @@
 {
     "tasks": {
-        "udd": "udd '*/*.ts' '*.ts'"
+        "udd": "udd '*/*.ts' '*.ts'",
+        "example": "deno run --unstable -A example.ts"
     },
     "lint": {},
     "fmt": {

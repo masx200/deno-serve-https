@@ -1,3 +1,7 @@
+import {
+    copy,
+    writeAll,
+} from "https://deno.land/std@0.147.0/streams/conversion.ts";
 import { ConnInfo, serve_http, serve_https } from "./mod.ts";
 export function upgrade(req: Request, connInfo: ConnInfo) {
     const { socket, response } = Deno.upgradeWebSocket(req);
@@ -77,10 +81,6 @@ export async function connect(
 }
 export const handlers = { upgrade, connect, request: handler };
 
-import {
-    copy,
-    writeAll,
-} from "https://deno.land/std@0.147.0/streams/conversion.ts";
 export const key = await (
     await fetch("https://unpkg.com/self-signed-cert@1.0.1/key.pem")
 ).text();
