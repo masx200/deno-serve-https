@@ -6,7 +6,7 @@
 // }
 export type Handler = (
     request: Request,
-    connInfo: ConnInfo
+    connInfo: ConnInfo,
 ) => Response | Promise<Response>;
 export interface ConnInfo {
     /** The local address of the connection. */
@@ -61,7 +61,7 @@ export type ServeHttpsInit = Partial<
             // deno-lint-ignore no-explicit-any
             reason: any,
             request: Request,
-            connInfo: ConnInfo
+            connInfo: ConnInfo,
         ) => Response | PromiseLike<Response>;
         onListen?: (params: { hostname: string; port: number }) => void;
     }
@@ -88,7 +88,7 @@ export async function serve_https(
         onError = on_Error,
         alpnProtocols = ["h2", "http/1.1"],
         ...rest
-    }: ServeHttpsInit = {}
+    }: ServeHttpsInit = {},
 ): Promise<void> {
     const { signal } = rest;
     if (signal?.aborted) {
@@ -109,7 +109,7 @@ export async function serve_https(
             rest.onListen?.({ port, hostname });
         } else {
             console.log(
-                `Listening on https://${hostnameForDisplay(hostname)}:${port}/`
+                `Listening on https://${hostnameForDisplay(hostname)}:${port}/`,
             );
         }
         for await (const conn of server) {
@@ -150,7 +150,7 @@ async function on_connection({
         // deno-lint-ignore no-explicit-any
         reason: any,
         request: Request,
-        connInfo: ConnInfo
+        connInfo: ConnInfo,
     ) => Response | PromiseLike<Response>;
     onNotFound?: Handler;
 }) {
@@ -209,7 +209,7 @@ async function requestEventProcessor({
         // deno-lint-ignore no-explicit-any
         reason: any,
         request: Request,
-        connInfo: ConnInfo
+        connInfo: ConnInfo,
     ) => Response | PromiseLike<Response>;
     onNotFound?: Handler;
 }) {
@@ -227,7 +227,7 @@ async function requestEventProcessor({
     if (handlers.upgrade) {
         if (
             requestEvent.request.headers.get("Connection")?.toLowerCase() ===
-            "upgrade"
+                "upgrade"
         ) {
             await on_request({
                 requestEvent,
@@ -257,7 +257,7 @@ async function requestEventProcessor({
 }
 export function on_Error(
     // deno-lint-ignore no-explicit-any
-    e: any
+    e: any,
 ) {
     console.error(e);
     return new Response(String(e), {
@@ -277,12 +277,12 @@ async function on_request({
         // deno-lint-ignore no-explicit-any
         reason: any,
         request: Request,
-        connInfo: ConnInfo
+        connInfo: ConnInfo,
     ) => Response | PromiseLike<Response>;
 }) {
     await requestEvent.respondWith(
         await Promise.resolve(handler(requestEvent.request, connInfo)).catch(
-            (e) => onError(e, requestEvent.request, connInfo)
-        )
+            (e) => onError(e, requestEvent.request, connInfo),
+        ),
     );
 }

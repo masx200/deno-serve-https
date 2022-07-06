@@ -1,0 +1,12 @@
+{
+    "tasks": {
+        "udd": "udd '*/*.ts' '*.ts'"
+    },
+    "lint": {},
+    "fmt": {
+        "options": {
+            "indentWidth": 4,
+            "singleQuote": false
+        }
+    }
+}
