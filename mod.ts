@@ -13,7 +13,7 @@ export interface ConnInfo {
     readonly localAddr: Deno.Addr;
     /** The remote address of the connection. */
     readonly remoteAddr: Deno.Addr;
-    alpnProtocol: string | null | undefined;
+    alpnProtocol?: string | null | undefined;
 }
 // function upgrade(req: Request, connInfo: ConnInfo) {
 //     const { socket, response } = Deno.upgradeWebSocket(req);
