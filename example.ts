@@ -36,7 +36,7 @@ function handler(req: Request, connInfo: ConnInfo): Response {
 }
 export async function connect(
     request: Request,
-    connInfo: ConnInfo,
+    connInfo: ConnInfo
 ): Promise<Response> {
     const { url, headers, method } = request;
 
@@ -88,7 +88,9 @@ export const cert = await (
     await fetch("https://unpkg.com/self-signed-cert@1.0.1/cert.pem")
 ).text();
 // console.log(cert, key);
-await Promise.all([
-    serve_http(handlers, { port: 18080 }),
-    serve_https(handlers, { port: 18443, cert, key }),
-]);
+if (import.meta.main) {
+    await Promise.all([
+        serve_http(handlers, { port: 18080 }),
+        serve_https(handlers, { port: 18443, cert, key }),
+    ]);
+}
