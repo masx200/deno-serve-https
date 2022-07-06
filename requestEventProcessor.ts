@@ -49,7 +49,7 @@ const{alpnProtocol}=conn_info
             return;
         }
     }
-    if (handlers.request &&alpnProtocol === "h2"|| !is_connect_or_upgrade(requestEvent.request)) {
+    if (handlers.request &&(alpnProtocol === "h2"|| !is_connect_or_upgrade(requestEvent.request))) {
         await on_request({
             requestEvent,
             connInfo: conn_info,
