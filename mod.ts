@@ -98,8 +98,7 @@ export async function serve_https(
     {
         port = 8000,
         hostname = "0.0.0.0",
-        certFile,
-        keyFile,
+
         onNotFound = on_NotFound,
         onError = on_Error,
         alpnProtocols = ["h2", "http/1.1"],
@@ -114,8 +113,7 @@ export async function serve_https(
         ...rest,
         port: port,
         hostname,
-        certFile: certFile,
-        keyFile: keyFile,
+
         alpnProtocols,
     });
 

@@ -18,6 +18,10 @@
 
 3. 把`connect`方法的请求,升级`upgrade`的请求,普通请求`request`拆分成三个处理函数.
 
-4.可以获取到`http`请求的`alpnProtocol`来判断是否是`http/2`请求.
+4. 可以获取到`http`请求的`alpnProtocol`来判断是否是`http/2`请求.
 
 #### 使用说明
+
+```shell
+deno run --unstable -A example.ts
+```
