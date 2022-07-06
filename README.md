@@ -20,6 +20,13 @@
 
 4. 可以获取到`http`请求的`alpnProtocol`来判断是否是`http/2`请求.
 
+
+### 导入方法
+
+```ts
+import{Handler ,ConnInfo ,ServeHttpsInit ,ServeHttpInit ,Handlers,serve_https,serve_http}from
+'https://deno.land/x/masx200_deno_serve_https/mod.ts'
+```
 #### 使用说明
 
 https://github.com/masx200/deno-serve-https/blob/master/example.ts
