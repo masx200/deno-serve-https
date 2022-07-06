@@ -12,7 +12,7 @@ deno-serve-https
 
 1. `alpnProtocols`:目前是`unstable`的`api`.
 
-2. 由于`http/2`中每个请求都是独立并发的,而`http/1`中每个`http`升级请求都是阻塞的,所以请求的处理方式会有所不同.
+2. 由于`http/2`中每个请求都是独立并发的,而`http/1`中每个`http`升级请求都是阻塞连接的,所以请求的处理方式会有所不同.
 
 3. 把`connect`方法的请求,`upgrade`的请求,普通请求`request`拆分成三个处理函数.
 
