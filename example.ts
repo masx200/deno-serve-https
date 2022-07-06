@@ -36,7 +36,7 @@ function handler(req: Request, connInfo: ConnInfo): Response {
 }
 export async function connect(
     request: Request,
-    connInfo: ConnInfo
+    connInfo: ConnInfo,
 ): Promise<Response> {
     const { url, headers, method } = request;
 
