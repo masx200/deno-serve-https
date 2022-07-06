@@ -23,7 +23,8 @@ export async function requestEventProcessor({
     ) => Response | PromiseLike<Response>;
     onNotFound?: Handler;
 }) {
-    if (handlers.connect) {
+const{alpnProtocol}=conn_info
+    if (handlers.connect&&alpnProtocol !== "h2" ) {
         if (requestEvent.request.method === "CONNECT") {
             await on_request({
                 requestEvent,
@@ -34,7 +35,7 @@ export async function requestEventProcessor({
             return;
         }
     }
-    if (handlers.upgrade) {
+    if (handlers.upgrade&&alpnProtocol !== "h2" ) {
         if (
             requestEvent.request.headers.get("Connection")?.toLowerCase() ===
                 "upgrade"
@@ -48,7 +49,7 @@ export async function requestEventProcessor({
             return;
         }
     }
-    if (handlers.request && !is_connect_or_upgrade(requestEvent.request)) {
+    if (handlers.request &&alpnProtocol === "h2"|| !is_connect_or_upgrade(requestEvent.request)) {
         await on_request({
             requestEvent,
             connInfo: conn_info,
