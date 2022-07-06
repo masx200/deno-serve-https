@@ -22,6 +22,8 @@
 
 #### 使用说明
 
+https://github.com/masx200/deno-serve-https/blob/master/example.ts
+
 ```shell
 deno run --unstable -A example.ts
 ```
