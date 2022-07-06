@@ -80,7 +80,7 @@ export const handlers = { upgrade, connect, request: handler };
 import {
     copy,
     writeAll,
-} from "https://deno.land/std@0.146.0/streams/conversion.ts";
+} from "https://deno.land/std@0.147.0/streams/conversion.ts";
 export const key = await (
     await fetch("https://unpkg.com/self-signed-cert@1.0.1/key.pem")
 ).text();
