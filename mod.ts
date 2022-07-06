@@ -13,7 +13,7 @@ export interface ConnInfo {
     readonly localAddr: Deno.Addr;
     /** The remote address of the connection. */
     readonly remoteAddr: Deno.Addr;
-    alpnProtocol: string | null;
+    alpnProtocol: string | null | undefined;
 }
 // function upgrade(req: Request, connInfo: ConnInfo) {
 //     const { socket, response } = Deno.upgradeWebSocket(req);
@@ -56,6 +56,22 @@ export type ServeHttpsInit = Partial<
         hostname?: string;
         certFile?: string;
         keyFile?: string;
+
+        onError?: (
+            // deno-lint-ignore no-explicit-any
+            reason: any,
+            request: Request,
+            connInfo: ConnInfo,
+        ) => Response | PromiseLike<Response>;
+        onListen?: (params: { hostname: string; port: number }) => void;
+    }
+>;
+export type ServeHttpInit = Partial<
+    Deno.ListenOptions & {
+        onNotFound?: Handler;
+        signal?: AbortSignal;
+        port?: number;
+        hostname?: string;
 
         onError?: (
             // deno-lint-ignore no-explicit-any
@@ -116,7 +132,56 @@ export async function serve_https(
             if (signal?.aborted) {
                 return;
             }
-            on_connection({
+            on_tls_connection({
+                conn,
+                handlers,
+                onError,
+                signal: signal,
+                onNotFound,
+            }).catch(console.error);
+        }
+    } catch (error) {
+        throw error;
+    } finally {
+        server.close();
+    }
+}
+export async function serve_http(
+    handlers: Handlers = {},
+    {
+        port = 8000,
+        hostname = "0.0.0.0",
+
+        onNotFound = on_NotFound,
+        onError = on_Error,
+
+        ...rest
+    }: ServeHttpInit = {},
+): Promise<void> {
+    const { signal } = rest;
+    if (signal?.aborted) {
+        return;
+    }
+    const server = Deno.listen({
+        ...rest,
+        port: port,
+        hostname,
+    });
+
+    signal?.addEventListener("abort", () => server.close());
+    try {
+        if ("onListen" in rest) {
+            rest.onListen?.({ port, hostname });
+        } else {
+            console.log(
+                `Listening on http://${hostnameForDisplay(hostname)}:${port}/`,
+            );
+        }
+        for await (const conn of server) {
+            if (signal?.aborted) {
+                return;
+            }
+            on_tcp_connection({
                 conn,
                 handlers,
                 onError,
@@ -135,7 +200,7 @@ export function on_NotFound() {
         status: 404,
     });
 }
-async function on_connection({
+async function on_tls_connection({
     conn,
     handlers,
     onError = on_Error,
@@ -164,6 +229,60 @@ async function on_connection({
     const conn_info: ConnInfo = {
         localAddr,
         alpnProtocol,
+        remoteAddr,
+    };
+    const httpConn = Deno.serveHttp(conn);
+    signal?.addEventListener("abort", function () {
+        httpConn.close();
+        conn.close();
+    });
+
+    for await (const requestEvent of httpConn) {
+        if (signal?.aborted) {
+            return;
+        }
+
+        const promise = requestEventProcessor({
+            handlers,
+            requestEvent,
+            conn_info,
+            onError,
+            onNotFound,
+        }).catch(console.error);
+        if (is_connect_or_upgrade(requestEvent.request)) {
+            return await promise;
+        }
+    }
+}
+async function on_tcp_connection({
+    conn,
+    handlers,
+    onError = on_Error,
+    signal,
+    onNotFound = on_NotFound,
+}: {
+    signal?: AbortSignal;
+    conn: Deno.Conn;
+    handlers: Handlers;
+
+    onError?: (
+        // deno-lint-ignore no-explicit-any
+        reason: any,
+        request: Request,
+        connInfo: ConnInfo,
+    ) => Response | PromiseLike<Response>;
+    onNotFound?: Handler;
+}) {
+    if (signal?.aborted) {
+        return;
+    }
+    const { localAddr, remoteAddr } = conn;
+
+    // const hand_shake_info =undefined
+    // const { alpnProtocol } = hand_shake_info;
+    const conn_info: ConnInfo = {
+        localAddr,
+        alpnProtocol: undefined,
         remoteAddr,
     };
     const httpConn = Deno.serveHttp(conn);

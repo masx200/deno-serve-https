@@ -1,12 +1,14 @@
-# deno-serve-https
+# `deno-serve-https-http`
 
 #### 介绍
 
-deno-serve-https
+`deno-serve-https-http`
 
 #### 软件架构
 
-对于`deno`的低级`api`的封装,可以启动同时支持`http/1.1`和`http/2`的`https`服务,并且在一个端口上同时支持了`http`连接升级,`websocket`,`connect`方法和普通请求.
+`serve_https`:对于`deno`的低级`api`的封装,可以启动同时支持`http/1.1`和`http/2`的`https`服务,并且在一个端口上同时支持了`http`连接升级,`websocket`,`connect`方法和普通请求.
+
+`serve_http`:对于`deno`的低级`api`的封装,可以启动支持`http/1.1`的`http`服务,并且在一个端口上同时支持了`http`连接升级,`websocket`,`connect`方法和普通请求.
 
 ### 与标准库的函数的区别:
 
