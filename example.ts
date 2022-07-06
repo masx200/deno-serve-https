@@ -87,6 +87,8 @@ export const key = await (
 export const cert = await (
     await fetch("https://unpkg.com/self-signed-cert@1.0.1/cert.pem")
 ).text();
-console.log(cert, key);
-serve_http(handlers, { port: 18080 });
-serve_https(handlers, { port: 18443, cert, key });
+// console.log(cert, key);
+await Promise.all([
+    serve_http(handlers, { port: 18080 }),
+    serve_https(handlers, { port: 18443, cert, key }),
+]);
