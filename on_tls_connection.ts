@@ -31,10 +31,10 @@ export async function on_tls_connection({
     const { localAddr, remoteAddr } = conn;
 
     const hand_shake_info = await conn.handshake();
-    const { alpnProtocol = "http/1.1" } = hand_shake_info;
+    const { alpnProtocol } = hand_shake_info;
     const conn_info: ConnInfo = {
         localAddr,
-        alpnProtocol: alpnProtocol ?? "http/1.1",
+        alpnProtocol: alpnProtocol,
         remoteAddr,
     };
     const httpConn = Deno.serveHttp(conn);

@@ -3,5 +3,5 @@ export type ConnInfo = Readonly<{
     readonly localAddr: Deno.Addr;
     /** The remote address of the connection. */
     readonly remoteAddr: Deno.Addr;
-    alpnProtocol: string;
+    alpnProtocol: string | null;
 }>;

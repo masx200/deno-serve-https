@@ -34,7 +34,7 @@ export async function on_tcp_connection({
     // const { alpnProtocol } = hand_shake_info;
     const conn_info: ConnInfo = {
         localAddr,
-        alpnProtocol: "http/1.1",
+        alpnProtocol: null,
         remoteAddr,
     };
     const httpConn = Deno.serveHttp(conn);
