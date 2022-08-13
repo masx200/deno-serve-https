@@ -49,6 +49,10 @@ export async function serve_http(
     } catch (error) {
         throw error;
     } finally {
-        server.close();
+        try {
+            server.close();
+        } catch (error) {
+            console.error(error);
+        }
     }
 }

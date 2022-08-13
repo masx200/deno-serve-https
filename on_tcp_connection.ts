@@ -39,8 +39,12 @@ export async function on_tcp_connection({
     };
     const httpConn = Deno.serveHttp(conn);
     signal?.addEventListener("abort", function () {
-        httpConn.close();
-        conn.close();
+        try {
+            httpConn.close();
+            conn.close();
+        } catch (error) {
+            console.error(error);
+        }
     });
 
     for await (const requestEvent of httpConn) {

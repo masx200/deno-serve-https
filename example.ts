@@ -21,8 +21,8 @@ export function upgrade(req: Request, connInfo: ConnInfo) {
     });
     return response;
 }
-export { handler as request };
-function handler(req: Request, connInfo: ConnInfo): Response {
+export { request as request };
+function request(req: Request, connInfo: ConnInfo): Response {
     const { url, headers, method } = req;
 
     const data = {
@@ -79,7 +79,7 @@ export async function connect(
         return new Response("503", { status: 503 });
     }
 }
-export const handlers = { upgrade, connect, request: handler };
+export const handlers = { upgrade, connect, request: request };
 
 export const key = await (
     await fetch("https://unpkg.com/self-signed-cert@1.0.1/key.pem")
