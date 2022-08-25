@@ -1,4 +1,4 @@
-import { assert } from "https://deno.land/std@0.152.0/_util/assert.ts";
+import { assert } from "https://deno.land/std@0.153.0/_util/assert.ts";
 import { handlers } from "./example.ts";
 import { serve_http } from "./mod.ts";
 Deno.test("example-request", async () => {
@@ -52,4 +52,4 @@ Deno.test("example-upgrade", async () => {
     wss.close();
     ac.abort();
 });
-import { assertEquals } from "https://deno.land/std@0.152.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.153.0/testing/asserts.ts";
