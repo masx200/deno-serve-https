@@ -1,3 +1,4 @@
+import { Handler } from "./Handler.ts";
 import { Handlers } from "./Handlers.ts";
 import { hostnameForDisplay } from "./hostnameForDisplay.ts";
 import { on_Error } from "./on_Error.ts";
@@ -6,7 +7,7 @@ import { on_tcp_connection } from "./on_tcp_connection.ts";
 import { ServeHttpInit } from "./ServeHttpInit.ts";
 
 export async function serve_http(
-    handlers: Handlers = {},
+    handlers: Handlers | Handler = {},
     {
         port = 8000,
         hostname = "0.0.0.0",
@@ -40,7 +41,9 @@ export async function serve_http(
             }
             on_tcp_connection({
                 conn,
-                handlers,
+                handlers: typeof handlers === "function"
+                    ? { request: handlers }
+                    : handlers,
                 onError,
                 signal: signal,
                 onNotFound,
@@ -51,8 +54,8 @@ export async function serve_http(
     } finally {
         try {
             server.close();
-        } catch (error) {
-            console.error(error);
+        } catch/*  (error) */ {
+            // console.error(error);
         }
     }
 }

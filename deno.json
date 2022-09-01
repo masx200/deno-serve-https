@@ -1,7 +1,7 @@
 {
     "tasks": {
         "check": "deno check --unstable --remote mod.ts",
-        "udd": "udd '*/*.ts' '*.ts'",
+        "udd": "deno run -A https://deno.land/x/udd/main.ts '*/*.ts' '*.ts'",
         "example": "deno run --unstable -A example.ts",
         "test": "deno test --unstable -A"
     },

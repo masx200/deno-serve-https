@@ -1,3 +1,4 @@
+import { Handler } from "./Handler.ts";
 import { Handlers } from "./Handlers.ts";
 import { hostnameForDisplay } from "./hostnameForDisplay.ts";
 import { on_Error } from "./on_Error.ts";
@@ -6,7 +7,7 @@ import { on_tls_connection } from "./on_tls_connection.ts";
 import { ServeHttpsInit } from "./ServeHttpsInit.ts";
 
 export async function serve_https(
-    handlers: Handlers = {},
+    handlers: Handlers | Handler = {},
     {
         port = 8000,
         hostname = "0.0.0.0",
@@ -43,7 +44,9 @@ export async function serve_https(
             }
             on_tls_connection({
                 conn,
-                handlers,
+                handlers: typeof handlers === "function"
+                    ? { request: handlers }
+                    : handlers,
                 onError,
                 signal: signal,
                 onNotFound,
