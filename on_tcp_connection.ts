@@ -42,8 +42,8 @@ export async function on_tcp_connection({
         try {
             httpConn.close();
             conn.close();
-        } catch/*  (error) */ {
-            // console.error(error);
+        } catch {
+            /*  (error) */// console.error(error);
         }
     });
 
