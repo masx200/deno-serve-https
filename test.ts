@@ -1,8 +1,8 @@
 import { handlers } from "./example.ts";
 import { serve_http } from "./mod.ts";
-import { assert } from "https://deno.land/std@0.153.0/_util/assert.ts";
+import { assert } from "https://deno.land/std@0.157.0/_util/assert.ts";
 
-import { assertEquals } from "https://deno.land/std@0.153.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.157.0/testing/asserts.ts";
 
 Deno.test("example-request", async () => {
     const ac = new AbortController();
