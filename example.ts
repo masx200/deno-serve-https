@@ -2,7 +2,7 @@ import { ConnInfo, serve_http, serve_https } from "./mod.ts";
 import {
     copy,
     writeAll,
-} from "https://deno.land/std@0.157.0/streams/conversion.ts";
+} from "https://deno.land/std@0.178.0/streams/conversion.ts";
 
 export function upgrade(req: Request, connInfo: ConnInfo) {
     const { socket, response } = Deno.upgradeWebSocket(req);
